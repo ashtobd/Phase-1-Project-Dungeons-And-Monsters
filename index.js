@@ -4,6 +4,19 @@ function init() {
   filterSearch()
 }
 
+
+function filterSearch(){
+    const searchInput = document.getElementById("search")
+    searchInput.addEventListener("input", e => {
+        const value = e.target.value
+        console.log(value)
+        //button.forEach(button => {
+            //const isVisible = button.name.includes(value)
+            //button.element.classList.toggle("hide", !isVisible) 
+        })
+    }
+
+
 function addSpells(){
     fetch('https://www.dnd5eapi.co/api/spells/')
     .then(resp => resp.json())
