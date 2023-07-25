@@ -1,40 +1,44 @@
-// Need to fetch data from API, use that data to create spell buttons that,
-// when clicked, expand information on the selected spell.
-
- //initializes fetch
-
-function init(){
-    getSpells()
+document.addEventListener("DOMContentLoaded", init)
+function init() {
+  addSpells()
+  filterSearch()
 }
 
-function getSpells(){
+function addSpells(){
     fetch('https://www.dnd5eapi.co/api/spells/')
     .then(resp => resp.json())
-    .then(data =>{
-        makeButtons(data.results)
-    })
+    .then(data => makeButtons(data.results))
+
+function makeButtons(spells){
+  spells.map(element => {
+    const button = document.createElement("button")
+    button.innerText = element.index
+    button.className = "spell button"
+    button.addEventListener("click", (e) => spellPage(e.target.innerText))
+          document.getElementById("buttons").appendChild(button)
+  })
 }
 
-function makeList(spells){
-    spells.map(element => {
-        fetch(`https://www.dnd5eapi.co/api/spells/${element.index}`)
-        .then(resp => resp.json())
-        .then(data => {
-            const list = document.createElement("ul")
-            ul.innerText = data.index
-            ul.className = "spell-button"
-            button.addEventListener("click", (e) => spellPage(e.target.innerText))
-            document.getElementById("spell container").appendChild(ul)
-        })
+function spellPage(target){
+  document.getElementById("spell name").remove()
+  fetch(`https://www.dnd5eapi.co/api/spells/${target}/`)
+  .then(resp => resp.json())
+  .then(data => {
+    h3 = document.createElement("h3")
+    p1 = document.createElement("p")
+    p2 = document.createElement("p")
+    p3 = document.createElement("p")
+    p4 = document.createElement("p")
+    h3.innerText = `Spell Name: ${data.name}`
+    p1.innerText = `Range: ${data.range}`
+    p2.innerText = `Casting Time: ${data.casting_time}`
+    p3.innerText = `Components: ${data.components}`
+    p4.innerText = `Description: ${data.desc}`
+    h3.appendChild(p1)
+    p1.appendChild(p2)
+    p2.appendChild(p3)
+    p3.appendChild(p4)
+    document.getElementById("spell").appendChild(h3)
+    h3.id = "spell name"
     })
-}
-
-function spellPage() {
-    fetch(`https://www.dnd5eapi.co/api/classes/${elem}/levels`)
-    .then(resp => resp.json())
-    .then(data => data.forEach(function(spell) {
-        h3 = document.createElement("h3")
-        h3.innerText = `spellName: ${spell}.name`
-        h3.id = `${spell}.name`
-    }))
-}
+}}
